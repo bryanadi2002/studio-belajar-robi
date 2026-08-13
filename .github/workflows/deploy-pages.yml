@@ -20,22 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile=false
-      - name: Build static frontend
-        run: pnpm exec vite build --base=/studio-belajar-robi/ --outDir=dist-pages
-        env:
-          VITE_BACKEND_ORIGIN: https://minggu5kodin-wr4swhdt.manus.space
-      - name: Add SPA fallback
-        run: cp dist-pages/index.html dist-pages/404.html
+      - name: Prepare static artifact
+        run: |
+          mkdir -p dist-pages
+          cp index.html 404.html dist-pages/
+          cp -- *.css *.js dist-pages/
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload Pages artifact
